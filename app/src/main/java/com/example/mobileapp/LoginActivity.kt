@@ -22,6 +22,8 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Введите email и пароль", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "Вход выполнен: $email", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
             }
         }
 
