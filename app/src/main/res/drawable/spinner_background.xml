@@ -1,0 +1,17 @@
+<!-- res/drawable/spinner_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Фон: белый с закруглениями -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/white" />
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+
+    <!-- Стрелка (векторная) справа -->
+    <item
+        android:drawable="@drawable/ic_arrow_down"
+        android:gravity="end|center_vertical"
+        android:right="12dp" />
+</layer-list>

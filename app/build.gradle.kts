@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
+    id("kotlin-kapt") // Поддержка аннотаций Kotlin
 }
 
 android {
@@ -17,7 +17,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    buildFeatures {
+        viewBinding=true
+    }
     buildTypes {
         release {
             isMinifyEnabled = false

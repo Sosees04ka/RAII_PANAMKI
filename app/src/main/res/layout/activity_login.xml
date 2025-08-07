@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loginLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="top|center_horizontal"
+    android:background="@drawable/gradient_bg"
+    android:paddingTop="80dp"
+    android:paddingBottom="24dp"
+    tools:context=".LoginActivity">
+
+    <!-- Заголовок -->
+    <TextView
+        android:id="@+id/welcomeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Добро\nпожаловать"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="48dp" />
+
+    <!-- Контейнер для формы -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+            android:hint="Email"
+            android:padding="12dp"
+            android:background="@drawable/rounded_edittext"
+            android:inputType="textEmailAddress"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+            android:hint="Пароль"
+            android:padding="12dp"
+            android:background="@drawable/rounded_edittext"
+            android:inputType="textPassword"
+            android:layout_marginBottom="24dp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/loginButton"
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+            android:textAllCaps="false"
+            android:text="Войти"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/black_button"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/registerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Нет аккаунта?\nЗарегистрируйся"
+            android:textSize="14sp"
+            android:textColor="#FFFFFF"
+            android:gravity="center" />
+    </LinearLayout>
+</LinearLayout>
