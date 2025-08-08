@@ -11,24 +11,18 @@
         android:gravity="center"
         android:background="#F5F5F5">
 
-        <TextView
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="10dp"
+            android:src="@drawable/look_sticker"
             android:text="Ваш гардероб"
             android:background="@drawable/gradien_bg_reverse_text"
             android:textColor="#FFFFFF"
             android:gravity="center"
             android:textSize="24sp"
             android:layout_margin="20dp"/>
-
-        <Spinner
-            android:id="@+id/genderSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="5dp"
-            android:background="@drawable/spinner_background"
-            android:spinnerMode="dropdown"/>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
@@ -87,7 +81,7 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add"
+        android:id="@+id/fab_add_look"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/plus_add"

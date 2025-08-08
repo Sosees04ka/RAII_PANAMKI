@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="12dp"
+    app:cardBackgroundColor="@android:color/white">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:rowCount="2"
+        android:useDefaultMargins="false"
+        android:alignmentMode="alignBounds"
+        android:gravity="center"
+        android:columnWidth="0dp"
+        android:horizontalSpacing="0dp"
+    android:verticalSpacing="0dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imageView1"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:columnWidth="0dp"
+        android:layout_columnWeight="1"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:padding="2dp"
+        android:src="@drawable/tshirt_example"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imageView2"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:columnWidth="0dp"
+        android:layout_columnWeight="1"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:padding="2dp"
+        android:src="@drawable/tshirt_example" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imageView3"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:columnWidth="0dp"
+        android:layout_columnWeight="1"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:padding="2dp"
+        android:src="@drawable/tshirt_example"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imageView4"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:layout_columnWeight="1"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:padding="2dp"
+        android:src="@drawable/tshirt_example"/>
+</GridLayout>
+    </androidx.cardview.widget.CardView>

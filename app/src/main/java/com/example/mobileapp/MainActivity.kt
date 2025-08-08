@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setOnItemSelectedListener { item ->
             val selectedFragment = when (item.itemId) {
                 R.id.nav_home -> HomeFragment()
-                //R.id.nav_looks -> LooksFragment()
+                R.id.nav_looks -> LookFragment()
                 R.id.nav_wardrobe -> ClothFragment()
                 else -> HomeFragment()
             }

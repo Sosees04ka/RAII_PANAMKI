@@ -3,19 +3,15 @@ package com.example.mobileapp
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Spinner
-import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.mobileapp.placeholder.PlaceholderContent
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class ClothFragment : Fragment() {
+class LookFragment : Fragment() {
 
     private lateinit var fabAdd: FloatingActionButton
     private lateinit var recyclerView: RecyclerView
@@ -25,19 +21,18 @@ class ClothFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_item_list2, container, false)
 
         emptyView = view.findViewById(R.id.empty_view)
-        fabAdd = view.findViewById(R.id.fab_add)
+        fabAdd = view.findViewById(R.id.fab_add_look)
         recyclerView = view.findViewById(R.id.recyclerView)
 
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-        recyclerView.adapter = MyClothRecyclerViewAdapter(generateClothes())
+        recyclerView.adapter = MyLookRecyclerViewAdapter(generateLooks())
         updateEmptyView()
 
         val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout)
 
-        // ✅ Ограничиваем срабатывание refresh только на самом верху списка
         swipeRefreshLayout.setOnChildScrollUpCallback { _, _ ->
             recyclerView.canScrollVertically(-1)
         }
@@ -61,8 +56,8 @@ class ClothFragment : Fragment() {
         }
     }
 
-    private fun generateClothes(): List<ClothItem> {
+    private fun generateLooks(): List<LookItem> {
         // Заглушка — 10 одинаковых футболок
-        return List(0) { ClothItem("Футболка", R.drawable.tshirt_example) }
+        return List(0) { LookItem(R.drawable.tshirt_example) }
     }
 }

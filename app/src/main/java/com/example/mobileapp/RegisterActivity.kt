@@ -23,10 +23,12 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
         val adapter = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_item, paths
+            R.layout.spinner_dropdown_item, // твой кастомный элемент
+            paths
         )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
+
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+        findViewById<Spinner>(R.id.genderSpinner).adapter = adapter
 
         spinner.onItemSelectedListener = this
 

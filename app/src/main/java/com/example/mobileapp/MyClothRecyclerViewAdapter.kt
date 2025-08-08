@@ -1,44 +1,34 @@
 package com.example.mobileapp
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 
-import com.example.mobileapp.placeholder.PlaceholderContent.PlaceholderItem
-import com.example.mobileapp.databinding.FragmentItemBinding
+data class ClothItem(val name: String, val imageResId: Int)
+
 class MyClothRecyclerViewAdapter(
-    private val values: List<PlaceholderItem>
+    private val items: List<ClothItem>
 ) : RecyclerView.Adapter<MyClothRecyclerViewAdapter.ViewHolder>() {
 
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val imageView: ImageView = view.findViewById(R.id.imageView)
+        val itemName: TextView = view.findViewById(R.id.item_name)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
-        return ViewHolder(
-            FragmentItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
-
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.fragment_item, parent, false)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = values[position]
-        holder.idView.text = item.id
-        holder.contentView.text = item.content
+        val item = items[position]
+        holder.imageView.setImageResource(item.imageResId)
+        holder.itemName.text = item.name
     }
 
-    override fun getItemCount(): Int = values.size
-
-    inner class ViewHolder(binding: FragmentItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        val idView: TextView = binding.itemNumber
-        val contentView: TextView = binding.content
-
-        override fun toString(): String {
-            return super.toString() + " '" + contentView.text + "'"
-        }
-    }
-
+    override fun getItemCount(): Int = items.size
 }
