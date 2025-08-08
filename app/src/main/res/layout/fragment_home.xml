@@ -8,6 +8,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:src="@drawable/hello_sticker">
     </ImageView>
     <TextView
@@ -15,29 +16,46 @@
         android:layout_height="wrap_content"
         android:text="Собери идеальный образ"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"/>
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/lookButton"
-        android:layout_width="280dp"
-        android:layout_height="50dp"
-        android:textAllCaps="false"
-        android:text="Создать образ"
-        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:layout_marginBottom="20dp"/>
+    <FrameLayout
+        android:layout_width="320dp"
+        android:layout_height="60dp"
         android:background="@drawable/button_create_look"
-        android:textSize="16sp"
-        android:drawableStart=""
-        android:layout_marginBottom="16dp" />
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/clothButton"
-        android:layout_width="280dp"
-        android:layout_height="50dp"
-        android:textAllCaps="false"
-        android:text="Добавить одежду"
-        android:textColor="#FFFFFF"
+        android:layout_marginBottom="16dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Создать образ"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/star_icon" />
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="320dp"
+        android:layout_height="60dp"
         android:background="@drawable/button_create_cloth"
-        android:drawableStart=""
-        android:textSize="16sp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Добавить вещь"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/shirt_icon" />
+    </FrameLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

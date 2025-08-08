@@ -1,0 +1,56 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:id="@+id/coordinator_layout"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="#F5F5F5"
+        android:padding="16dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Ваш гардероб"
+            android:background="@drawable/gradien_bg_reverse_text"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:elevation="5dp"
+            android:textSize="24sp"
+            android:layout_marginBottom="20dp"/>
+        <Spinner
+            android:id="@+id/genderSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/spinner_background"
+            android:spinnerMode="dropdown"
+            android:elevation="8dp" />
+    </LinearLayout>
+</ScrollView>
+
+<FrameLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="16dp"
+    android:background="@drawable/gradien_bg_reverse_text"
+    android:padding="4dp">
+
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/fab_add"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/plus_add"
+    app:backgroundTint="@android:color/transparent"
+    app:tint="@android:color/white" />
+</FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

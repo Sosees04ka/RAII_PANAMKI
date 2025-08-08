@@ -50,6 +50,7 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation ("androidx.security:security-crypto:1.1.0-alpha06")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     // Test dependencies
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")

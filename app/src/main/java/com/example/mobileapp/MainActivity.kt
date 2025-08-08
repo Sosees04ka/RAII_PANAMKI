@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
             val selectedFragment = when (item.itemId) {
                 R.id.nav_home -> HomeFragment()
                 //R.id.nav_looks -> LooksFragment()
-                //R.id.nav_wardrobe -> WardrobeFragment()
+                R.id.nav_wardrobe -> ClothFragment()
                 else -> HomeFragment()
             }
 
