@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cloth extends Model
 {
-     protected $fillable = [
+    public $timestamps = false;
+    protected $fillable = [
+        'user_id',
         'gender',
         'sub_category',
         'master_category',
@@ -17,7 +19,8 @@ class Cloth extends Model
         'product_display_name',
     ];
 
-    public function user(){
-        return $this->belongsTo('App\User','user_id');
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'user_id');
     }
 }
