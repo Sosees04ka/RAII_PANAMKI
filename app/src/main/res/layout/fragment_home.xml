@@ -1,71 +1,82 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:background="@drawable/gradient_bg_main"
-    android:padding="16dp">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/hello_sticker">
-    </ImageView>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Собери идеальный образ"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:layout_marginBottom="20dp"/>
-    <FrameLayout
-        android:layout_width="320dp"
-        android:layout_height="60dp"
-        android:background="@drawable/button_create_look"
-        android:layout_marginBottom="16dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Создать образ"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp" />
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="12dp"
-            android:src="@drawable/star_icon" />
-    </FrameLayout>
-    <FrameLayout
-        android:layout_width="320dp"
-        android:layout_height="60dp"
-        android:background="@drawable/button_create_cloth"
-        android:layout_marginBottom="16dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Добавить вещь"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp" />
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="12dp"
-            android:src="@drawable/shirt_icon" />
-    </FrameLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Любимые образы"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="50dp"
-        android:textSize="24sp"/>
-    <FrameLayout
+    android:background="@drawable/gradient_bg_main">
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/hello_sticker" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Собери идеальный образ"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:layout_marginBottom="20dp" />
+
+        <FrameLayout
+            android:layout_width="320dp"
+            android:layout_height="60dp"
+            android:background="@drawable/button_create_look"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Создать образ"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/star_icon" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="320dp"
+            android:layout_height="60dp"
+            android:background="@drawable/button_create_cloth"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Добавить вещь"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/shirt_icon" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Любимые образы"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="50dp"
+            android:textSize="24sp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
@@ -73,5 +84,18 @@
             android:layout_marginHorizontal="20dp"
             android:clipToPadding="false"
             android:nestedScrollingEnabled="false" />
-    </FrameLayout>
-</LinearLayout>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/fab_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="20dp"
+        android:background="@drawable/fab_exit"
+        app:tint="@android:color/white"
+        android:elevation="6dp"
+        app:useCompatPadding="true" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

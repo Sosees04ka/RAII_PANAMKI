@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config name="ipconfig"  cleartextTrafficPermitted="true">
+        <!-- Укажите IP вашего сервера или домен -->
+        <domain name="ip" includeSubdomains="false">10.85.227.181</domain>
+        <domain name="ip" includeSubdomains="false">192.168.41.52</domain>
+        <domain name="ip" includeSubdomains="false">192.168.130.52</domain>
+        <domain name="ip" includeSubdomains="false">192.168.172.52</domain>
+        <domain name="ip" includeSubdomains="false">192.168.177.52</domain>
+    </domain-config>
+</network-security-config>
