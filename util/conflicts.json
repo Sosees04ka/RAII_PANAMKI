@@ -1,0 +1,159 @@
+{
+  "hard_conflicts": [
+  ["Socks", "Sandals", -1.0],
+  ["Socks", "Flip Flops", -1.0],
+  ["Socks", "Heels", -0.8],
+  ["Flats", "Track Pants", -0.5],
+  ["Flip Flops", "Jeans", -0.9],
+  ["Casual Shoes", "Dresses", -0.4],
+  ["Casual Shoes", "Headband", -0.2],
+  ["Casual Shoes", "Ties", -0.6],
+  ["Flip Flops", "Jackets", -0.8],
+  ["Flip Flops", "Belts", -0.8],
+  ["Track Pants","Belts",-1.0],
+  ["Belts", "Leggings", -1.0],
+  ["Flip Flops", "Rain Jacket", -0.7],
+  ["Lounge Shorts", "Rain Jacket", -0.8],
+  ["Sunglasses", "Rain Jacket", -0.5],
+  ["Sports Shoes", "Dresses", -0.7],
+  ["Heels", "Track Pants", -0.9],
+  ["Heels", "Caps", -0.8],
+  ["Formal Shoes", "Lounge Shorts", -0.8],
+  ["Formal Shoes", "Caps", -0.8],
+  ["Formal Shoes", "Headband", -0.8],
+  ["Flip Flops", "Blazers", -1.0],
+  ["Sports Sandals", "Blazers", -0.9],
+  ["Ties", "Sweatshirts", -1.0],
+  ["Gloves", "Shorts", -0.7],
+  ["Sandals", "Leggings", -0.6],
+  ["Flats", "Jumpsuit", -0.6],
+  ["Flats", "Caps", -0.2],
+  ["Flats", "Socks", -0.4],
+  ["Flip Flops", "Gloves", -0.8],
+  ["Flip Flops", "Scarves", -0.7],
+  ["Flats", "Ties", -0.5]
+
+],
+  "rules": [
+  {
+    "type": "accessory_shoe",
+    "accessory": "Ties",
+    "shoes": ["Flip Flops", "Sandals", "Sports Sandals", "Casual Shoes"],
+    "score": -0.7
+  },
+  {
+    "type": "accessory_shoe",
+    "accessory": "Backpacks",
+    "shoes": ["Formal Shoes", "Heels"],
+    "score": -0.6
+  },
+  {
+    "type": "top_shoe",
+    "tops": ["Blazers", "Waistcoat", "Shirts", "Tunics"],
+    "shoes": ["Flip Flops", "Sports Sandals", "Sandals"],
+    "score": -0.7
+  },
+  {
+    "type": "top_shoe",
+    "tops": ["Sweatshirts", "Tracksuits", "Tshirts"],
+    "shoes": ["Formal Shoes", "Heels", "Flats"],
+    "score": -0.5
+  },
+  {
+    "type": "bottom_shoe",
+    "bottoms": ["Shorts", "Lounge Shorts", "Capris"],
+    "shoes": ["Formal Shoes", "Heels"],
+    "score": -0.5
+  },
+  {
+    "type": "bottom_shoe",
+    "bottoms": ["Track Pants", "Tights", "Leggings"],
+    "shoes": ["Formal Shoes", "Heels", "Flats"],
+    "score": -0.6
+  },
+  {
+    "type": "accessory_top",
+    "accessory": "Gloves",
+    "tops": ["Tshirts", "Tops", "Sweatshirts"],
+    "score": -0.5
+  },
+  {
+    "type": "accessory_top",
+    "accessory": "Caps",
+    "tops": ["Blazers", "Waistcoat", "Jackets"],
+    "score": -0.4
+  },
+  {
+    "type": "accessory_bottom",
+    "accessory": "Belts",
+    "bottoms": ["Track Pants", "Tights", "Leggings"],
+    "score": -0.6
+  },
+  {
+    "type": "top_bottom",
+    "tops": ["Sweaters", "Sweatshirts", "Tracksuits"],
+    "bottoms": ["Dresses", "Jumpsuit"],
+    "score": -1.0
+  },
+  {
+    "type": "top_bottom",
+    "tops": ["Blazers", "Waistcoat", "Jackets"],
+    "bottoms": ["Lounge Shorts", "Shorts", "Track Pants", "Capris", "Churidar", "Leggings", "Lounge Pants", "Tights"],
+    "score": -0.7
+  },
+  {
+    "type": "accessory_accessory",
+    "accessory1": "Backpacks",
+    "accessory2": "Handbags",
+    "score": -0.9
+  },
+  {
+    "type": "accessory_accessory",
+    "accessory1": "Ties",
+    "accessory2": "Scarves",
+    "score": -0.7
+  },
+  {
+    "type": "accessory_shoe",
+    "accessory": "Umbrellas",
+    "shoes": ["Flip Flops", "Sandals"],
+    "score": -0.5
+  },
+  {
+    "type": "top_shoe",
+    "tops": ["Tunics", "Shirts"],
+    "shoes": ["Sports Shoes", "Flip Flops"],
+    "score": -0.6
+  },
+  {
+    "type": "bottom_shoe",
+    "bottoms": ["Jeggings", "Jeans", "Sports Shorts"],
+    "shoes": ["Formal Shoes", "Heels", "Sandals"],
+    "score": -0.7
+  },
+  {
+    "type": "top_shoe",
+    "tops": ["Dresses", "Jumpsuit", "Tracksuits"],
+    "shoes": ["Formal Shoes", "Casual Shoes"],
+    "score": -0.6
+  },
+  {
+    "type": "accessory_top",
+    "accessory": "Gloves",
+    "tops": ["Shorts", "Skirts", "Lounge Shorts"],
+    "score": -0.7
+  },
+  {
+    "type": "bottom_accessory",
+    "bottoms": ["Skirts", "Dresses"],
+    "accessories": ["Belts"],
+    "score": -0.5
+  },
+  {
+    "type": "top_accessory",
+    "accessory": "Ties",
+    "tops": ["Sweatshirts", "Tshirts", "Tracksuits"],
+    "score": -0.8
+  }
+]
+}
