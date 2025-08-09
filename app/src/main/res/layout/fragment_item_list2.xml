@@ -80,17 +80,15 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@+id/fab_add_look"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/plus_add"
-        android:contentDescription="Добавить"
-        android:clickable="true"
-        android:focusable="true"
-        android:elevation="6dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="20dp"
-        app:tint="@android:color/white" />
+        android:background="@drawable/fab_gradient_with_icon"
+        app:tint="@android:color/white"
+        android:elevation="6dp"
+        app:useCompatPadding="true" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

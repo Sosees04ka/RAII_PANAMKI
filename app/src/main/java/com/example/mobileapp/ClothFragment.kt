@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.core.content.ContextCompat
@@ -17,7 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ClothFragment : Fragment() {
 
-    private lateinit var fabAdd: FloatingActionButton
+    private lateinit var fabAdd: ImageButton
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyView: LinearLayout
 
@@ -63,6 +64,6 @@ class ClothFragment : Fragment() {
 
     private fun generateClothes(): List<ClothItem> {
         // Заглушка — 10 одинаковых футболок
-        return List(0) { ClothItem("Футболка", R.drawable.tshirt_example) }
+        return List(10) { ClothItem("Футболка", R.drawable.tshirt_example) }
     }
 }

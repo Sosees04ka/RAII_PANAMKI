@@ -21,14 +21,21 @@
             android:textSize="24sp"
             android:layout_margin="20dp"/>
 
-        <Spinner
-            android:id="@+id/genderSpinner"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="5dp"
-            android:background="@drawable/spinner_background"
-            android:spinnerMode="dropdown"/>
+            app:cardElevation="10dp"
+            app:cardCornerRadius="12dp">
+
+            <Spinner
+                android:id="@+id/genderSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/spinner_background"
+                android:spinnerMode="dropdown"/>
+        </androidx.cardview.widget.CardView>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
@@ -44,7 +51,7 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginHorizontal="20dp"
+                    android:paddingHorizontal="20dp"
                     android:clipToPadding="false"
                     android:nestedScrollingEnabled="false"/>
 
@@ -86,17 +93,15 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@+id/fab_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/plus_add"
-        android:contentDescription="Добавить"
-        android:clickable="true"
-        android:focusable="true"
-        android:elevation="6dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="20dp"
-        app:tint="@android:color/white" />
+        android:background="@drawable/fab_gradient_with_icon"
+        app:tint="@android:color/white"
+        android:elevation="6dp"
+        app:useCompatPadding="true" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

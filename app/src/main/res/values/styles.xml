@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Базовый стиль для кастомизации формы -->
+    <style name="CustomShapeAppearance" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <!-- Стиль для самой FAB -->
+    <style name="CustomFabStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@null</item>
+        <item name="shapeAppearanceOverlay">@style/CustomShapeAppearance</item>
+    </style>
+</resources>
