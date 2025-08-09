@@ -5,9 +5,10 @@ use App\Http\Controllers\ClothesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [AuthController::class, 'me']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
 
 Route::group(['prefix' => 'auth'], function () {
     Route::post('register', [AuthController::class, 'register']);
@@ -15,10 +16,11 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('cloth/add', [ClothesController::class, 'add']);
-    Route::get('cloth/{id}', [ClothesController::class, 'get']);
-    Route::get('cloth', [ClothesController::class, 'get']);
-    Route::patch('cloth/edit/{id}', [ClothesController::class, 'update']);
-    Route::delete('cloth/delete/{id}', [ClothesController::class, 'delete']);
-});
+Route::group(['prefix' => 'cloth'], function () {
+    Route::post('baseAdd', [ClothesController::class, 'baseAdd']);
+    Route::post('addAfterComp', [ClothesController::class, 'addAfterComp']);
+    Route::get('{id}', [ClothesController::class, 'get']);
+    Route::get('', [ClothesController::class, 'get']);
+    Route::patch('edit/{id}', [ClothesController::class, 'update']);
+    Route::delete('delete/{id}', [ClothesController::class, 'delete']);
+})->middleware('auth:sanctum');

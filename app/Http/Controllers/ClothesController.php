@@ -4,20 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Models\Cloth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
-class ClothesController
+class ClothesController extends Controller
 {
-    public function add(Request $request)
+    public function baseAdd(Request $request)
     {
         $request->validate([
-            "gender" => "required",
-            "sub_category" => "required",
-            "master_category" => "required",
-            "article_category" => "required",
-            "base_color" => "required",
-            "season" => "required",
-            "usage" => "required",
+            'picture' => 'required|string',
+        ]);
+
+        $connectionString = 'http://127.0.0.1:8080/api/author';
+        $response = Http::get($connectionString, [
+            'picture' => $request->picture
+        ]);
+        if ($response->successful()) {
+            $data = $response->json();
+            return $data;
+        } else {
+            return $response->status();
+        }
+    }
+
+    public function addAfterComp(Request $request)
+    {
+        $request->validate([
+            "category" => "required|string",
+            "base_color" => "required|string",
             "product_display_name" => "required",
+            "size" => "required|string",
         ]);
 
         $newCloths = Cloth::create([
@@ -26,6 +41,7 @@ class ClothesController
         ]);
         return $newCloths;
     }
+
 
     public function get(Request $request, $id = null)
     {
@@ -41,13 +57,7 @@ class ClothesController
     public function update(Request $request, $id)
     {
         $data = $request->only([
-            'gender',
-            'sub_category',
-            'master_category',
-            'article_category',
-            'base_color',
-            'season',
-            'usage',
+            'size',
             'product_display_name'
         ]);
         $data = array_filter($data, function ($value) {
