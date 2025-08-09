@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClothesController;
+use App\Http\Controllers\LookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,12 +16,22 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('login', [AuthController::class, 'login']);
 });
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('cloth/add', [ClothesController::class, 'add']);
+    Route::get('cloth/preview', [ClothesController::class, 'getPreview']);
+    Route::get('cloth/{id}', [ClothesController::class, 'get']);
+    Route::get('cloth', [ClothesController::class, 'get']);
+    Route::post('cloth/edit/{id}', [ClothesController::class, 'update']);
+    Route::delete('cloth/delete/{id}', [ClothesController::class, 'delete']);
+});
 
-Route::group(['prefix' => 'cloth'], function () {
-    Route::post('baseAdd', [ClothesController::class, 'baseAdd']);
-    Route::post('addAfterComp', [ClothesController::class, 'addAfterComp']);
-    Route::get('{id}', [ClothesController::class, 'get']);
-    Route::get('', [ClothesController::class, 'get']);
-    Route::patch('edit/{id}', [ClothesController::class, 'update']);
-    Route::delete('delete/{id}', [ClothesController::class, 'delete']);
-})->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/look/weather', [LookController::class, 'createLooksOnWeather']);
+    Route::get('/look/random', [LookController::class, 'createLookRandom']);
+    Route::get('/look/picture', [LookController::class, 'createLookOnPicture']);
+    Route::get('/look/cloth/{id}', [LookController::class, 'createLooksOnCloth']);
+    Route::get('/look/{id}', [LookController::class, 'get']);
+    Route::get('/look', [LookController::class, 'get']);
+    Route::post('/look/like/{id}', [LookController::class, 'store']);
+    Route::post('/look/dislike/{id}', [LookController::class, 'destroy']);
+});

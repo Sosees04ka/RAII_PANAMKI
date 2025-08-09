@@ -9,11 +9,16 @@ class Cloth extends Model
     public $timestamps = false;
     protected $fillable = [
         'user_id',
-        'category',
+        'master_category',
+        'sub_category',
         'base_color',
+        'usage',
         'product_display_name',
-        'size',
         'picture'
+    ];
+
+    protected $casts = [
+        'base_color' => 'array',
     ];
 
     public function user()
