@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:padding="16dp">
 
         <ImageView
@@ -18,11 +18,14 @@
             android:src="@drawable/hello_sticker" />
 
         <TextView
+            android:id="@+id/welcomeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Собери идеальный образ"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:gravity="center"
             android:textColor="#FFFFFF"
-            android:textSize="24sp"
             android:layout_marginBottom="20dp" />
 
         <FrameLayout
@@ -48,6 +51,7 @@
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/buttonAddCloth"
             android:layout_width="320dp"
             android:layout_height="60dp"
             android:background="@drawable/button_create_cloth"
@@ -68,22 +72,6 @@
                 android:layout_marginStart="12dp"
                 android:src="@drawable/shirt_icon" />
         </FrameLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Любимые образы"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="50dp"
-            android:textSize="24sp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:clipToPadding="false"
-            android:nestedScrollingEnabled="false" />
 
     </LinearLayout>
 

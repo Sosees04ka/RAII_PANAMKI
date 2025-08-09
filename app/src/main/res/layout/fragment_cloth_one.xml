@@ -1,0 +1,170 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_bg_main"
+    android:fitsSystemWindows="true">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:layout_margin="8dp"
+            android:padding="16dp">
+
+            <!-- Изображение товара -->
+            <ImageView
+                android:id="@+id/picture"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/tshirt_example"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Название товара -->
+            <TextView
+                android:id="@+id/nameCloth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Название вещи"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Обертка для GridLayout, чтобы задать вес и ограничить высоту -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_grid_background"
+                android:padding="8dp"
+                android:layout_marginBottom="16dp">
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:columnCount="2"
+                    android:rowCount="4"
+                    android:padding="4dp">
+
+                    <!-- Подкатегория -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:text="Подкатегория:"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:paddingVertical="2dp" />
+
+                    <TextView
+                        android:id="@+id/subCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:text="пусто"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:paddingVertical="2dp" />
+
+                    <!-- Цвет -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:text="Цвет:"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:paddingVertical="2dp" />
+
+                    <ImageView
+                        android:id="@+id/color"
+                        android:layout_width="24dp"
+                        android:layout_height="10dp"
+                        android:layout_rowWeight="1"
+                        android:background="@color/red"
+                        android:layout_gravity="center_vertical" />
+
+
+                    <!-- Главная категория -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:text="Главная категория:"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:paddingVertical="2dp" />
+
+                    <TextView
+                        android:id="@+id/masterCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:text="пусто"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:paddingVertical="2dp" />
+
+                    <!-- Стиль -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:text="Стиль:"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:paddingVertical="2dp" />
+
+                    <TextView
+                        android:id="@+id/usage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:text="пусто"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:paddingVertical="2dp" />
+                </GridLayout>
+
+            </LinearLayout>
+
+            <!-- Кнопки действий -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/addWardrobe"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Составить образ с вещью"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/gradien_bg_reverse_text"
+                android:textSize="16sp"
+                android:layout_marginBottom="12dp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/deleteCloth"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Удалить из гардероба"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/background_delete"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

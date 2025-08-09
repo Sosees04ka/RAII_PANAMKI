@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,9 +17,9 @@ import com.example.mobileapp.controllers.listeners.AuthListener
 
 
 class HomeFragment : Fragment(),AuthListener {
-    private lateinit var recyclerView: RecyclerView
     private lateinit var exitButton: ImageButton
     private lateinit var authController: AuthController
+    private lateinit var buttonCreateCloth: FrameLayout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,28 +31,20 @@ class HomeFragment : Fragment(),AuthListener {
         }
 
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        recyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.adapter = MyLookRecyclerViewAdapter(generateLooks())
+        buttonCreateCloth = view.findViewById<FrameLayout>(R.id.buttonAddCloth)
+        buttonCreateCloth.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ClothAddFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
         exitButton=view.findViewById(R.id.fab_exit)
         exitButton.setOnClickListener {
             authController.logout()
         }
-        updateEmptyView()
         return view
 
-    }
-    private fun updateEmptyView() {
-        val adapter = recyclerView.adapter
-        if (adapter == null || adapter.itemCount == 0) {
-            recyclerView.visibility = View.GONE
-        } else {
-            recyclerView.visibility = View.VISIBLE
-        }
-    }
-
-    private fun generateLooks(): List<LookItem> {
-        return List(4) { LookItem(R.drawable.tshirt_example) }
     }
 
     override fun onMessage(message: String) {
