@@ -25,3 +25,6 @@ class ClothRequest(BaseModel):
 class BaseRequest(BaseModel):
     imageBase64: str
     wardrobe: List[ClothingItem]
+
+class ImageRequest(BaseModel):
+    img64: str
