@@ -1,8 +1,0 @@
-0 Casual Shoes
-1 Flats
-2 Flip Flops
-3 Formal Shoes
-4 Heels
-5 Sandals
-6 Sports Sanda...
-7 Sports Shoes

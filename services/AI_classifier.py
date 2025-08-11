@@ -1,102 +1,51 @@
-from pathlib import Path
-
-from keras.models import load_model
-from PIL import Image, ImageOps
-import numpy as np
 import base64
+import numpy as np
+import tensorflow as tf
+from PIL import Image
 from io import BytesIO
 
-SCRIPT_DIR = Path(__file__).parent.absolute()
-UTIL_DIR = SCRIPT_DIR.parent / "util"
+def load_labels(label_path):
+    with open(label_path, 'r', encoding='utf-8') as f:
+        labels = [line.strip() for line in f.readlines()]
+    return labels
 
-def classify_style(image_base64):
-    model_path = UTIL_DIR / "style_class.h5"
-    labels_path = UTIL_DIR / "style_labels.txt"
-    np.set_printoptions(suppress=True)
-    model = load_model(model_path, compile=False)
-    class_names = open(labels_path, "r").readlines()
+def preprocess_image(base64_str, target_size=(60, 80)):
+    try:
+        if base64_str.startswith("data:image"):
+            base64_str = base64_str.split(",", 1)[1]
 
-    data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
+        image_data = base64.b64decode(base64_str)
+    except Exception as e:
+        raise ValueError(f"Ошибка при декодировании base64: {e}")
 
-    image_data = base64.b64decode(image_base64)
-    image = Image.open(BytesIO(image_data)).convert("RGB")
+    print("Декодированный размер:", len(image_data), "байт")
 
-    size = (224, 224)
-    image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
-    image_array = np.asarray(image)
-    normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
-    data[0] = normalized_image_array
+    try:
+        img = Image.open(BytesIO(image_data)).convert('RGB')
+    except Exception as e:
+        raise ValueError(f"Ошибка при открытии изображения: {e}")
 
-    prediction = model.predict(data)
-    index = np.argmax(prediction)
-    class_name = class_names[index]
-    confidence_score = prediction[0][index]
+    img = img.resize(target_size)
+    img_array = np.array(img) / 255.0
+    img_array = np.expand_dims(img_array, axis=0)
+    return img_array.astype(np.float32)
 
-    return class_name, float(confidence_score)
 
-def classify_masterCategory(image_base64):
-    model_path = UTIL_DIR / "masterCategory_class.h5"
-    labels_path = UTIL_DIR / "masterCategory_labels.txt"
-    np.set_printoptions(suppress=True)
-    model = load_model(model_path, compile=False)
-    class_names = open(labels_path, "r").readlines()
+def predict(model_path, labels_path, base64_image):
+    labels = load_labels(labels_path)
+    model = tf.saved_model.load(model_path)
+    infer = model.signatures["serving_default"]
 
-    data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
+    img = preprocess_image(base64_image)
 
-    image_data = base64.b64decode(image_base64)
-    image = Image.open(BytesIO(image_data)).convert("RGB")
+    input_key = list(infer.structured_input_signature[1].keys())[0]
 
-    size = (224, 224)
-    image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
-    image_array = np.asarray(image)
-    normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
-    data[0] = normalized_image_array
+    outputs = infer(tf.constant(img))
+    output_key = list(outputs.keys())[0]
+    preds = outputs[output_key].numpy()[0]
 
-    prediction = model.predict(data)
-    index = np.argmax(prediction)
-    class_name = class_names[index]
-    confidence_score = prediction[0][index]
+    pred_idx = np.argmax(preds)
+    pred_label = labels[pred_idx]
+    pred_score = float(preds[pred_idx])
 
-    return class_name, float(confidence_score)
-
-def classify_subCategory(masterCategory, image_base64):
-    topwear_model_path = UTIL_DIR / "topwear_class.h5"
-    topwear_labels_path = UTIL_DIR / "topwear_labels.txt"
-    footwear_model_path = UTIL_DIR / "footwear_class.h5"
-    footwear_labels_path = UTIL_DIR / "footwear_labels.txt"
-    bottomwear_model_path = UTIL_DIR / "bottomwear_class.h5"
-    bottomwear_labels_path = UTIL_DIR / "bottomwear_labels.txt"
-    accessories_model_path = UTIL_DIR / "accessories_class.h5"
-    accessories_labels_path = UTIL_DIR / "accessories_labels.txt"
-    np.set_printoptions(suppress=True)
-
-    if masterCategory == "Topwear":
-        model = load_model(topwear_model_path, compile=False)
-        class_names = open(topwear_labels_path, "r").readlines()
-    elif masterCategory == "Footwear":
-        model = load_model(footwear_model_path, compile=False)
-        class_names = open(footwear_labels_path, "r").readlines()
-    elif masterCategory == "Bottomwear":
-        model = load_model(bottomwear_model_path, compile=False)
-        class_names = open(bottomwear_labels_path, "r").readlines()
-    elif masterCategory == "Accessories":
-        model = load_model(accessories_model_path, compile=False)
-        class_names = open(accessories_labels_path, "r").readlines()
-
-    data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
-
-    image_data = base64.b64decode(image_base64)
-    image = Image.open(BytesIO(image_data)).convert("RGB")
-
-    size = (224, 224)
-    image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
-    image_array = np.asarray(image)
-    normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
-    data[0] = normalized_image_array
-
-    prediction = model.predict(data)
-    index = np.argmax(prediction)
-    class_name = class_names[index]
-    confidence_score = prediction[0][index]
-
-    return class_name, float(confidence_score)
+    return pred_label
