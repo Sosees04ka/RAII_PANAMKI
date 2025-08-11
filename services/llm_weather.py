@@ -1,5 +1,6 @@
 import requests
 import json
+import re
 import base64
 import uuid
 
@@ -42,7 +43,7 @@ def get_chat_completion(auth_token, user_message):
         "top_p": 0.1,
         "n": 1,
         "stream": False,
-        "max_tokens": 512,
+        "max_tokens": 16672,
         "repetition_penalty": 1,
         "update_interval": 0
     })
@@ -63,17 +64,61 @@ def get_chat_completion(auth_token, user_message):
 def ask_gigachat(weather_desc: str, wardrobe_items: list):
     auth_token = get_giga_token()
     if not auth_token:
-        return "Не удалось получить токен GigaChat"
+        return json.dumps({"error": "Failed to get auth token"})
 
-    # Формируем сообщение для LLM
-    user_message = (
-        "У меня есть следующая погода: "
-        f"{weather_desc}. "
-        "В гардеробе следующие вещи:\n"
+    wardrobe_text = "\n".join(
+        f"{i}. id: {item.get('id') if item.get('id') is not None else 'null'}, "
+        f"masterCategory: \"{item['masterCategory']}\", "
+        f"subCategory: \"{item['subCategory']}\", "
+        f"color: {item['color']}, "
+        f"usage: \"{item['usage']}\""
+        for i, item in enumerate(wardrobe_items, 1)
     )
-    for i, item in enumerate(wardrobe_items, start=1):
-        user_message += f"{i}. {item['masterCategory']} / {item['subCategory']}, цвет {item['color']}, стиль {item['usage']}\n"
 
-    user_message += "Предложи 3 лучших комбинации одежды для этой погоды."
+    user_message = (
+        f"Погода: {weather_desc}.\n"
+        f"В гардеробе следующие вещи:\n{wardrobe_text}\n\n"
+        "Сгенерируй 3 комбинации одежды по следующим правилам:\n"
+        "1. Каждая комбинация должна содержать ровно 4 предмета (верх, низ, обувь, аксессуар)\n"
+        "2. Верни ответ ТОЛЬКО в формате JSON, без комментариев\n"
+        "3. Начни ответ сразу с открывающей фигурной скобки {\n"
+        "4. Формат должен строго соответствовать примеру:\n"
+        "{\n"
+        "  \"generated_outfits\": [\n"
+        "    {\n"
+        "      \"score\": 0.85,\n"
+        "      \"items\": [\n"
+        "        {\"id\": 1, \"masterCategory\": \"topwear\", \"subCategory\": \"Shirt\", \"color\": [255,0,0], \"usage\": \"Formal\", \"imageBase64\": null},\n"
+        "        {\"id\": 2, \"masterCategory\": \"bottomwear\", \"subCategory\": \"Pants\", \"color\": [0,0,0], \"usage\": \"Formal\", \"imageBase64\": null},\n"
+        "        {\"id\": 3, \"masterCategory\": \"footwear\", \"subCategory\": \"Shoes\", \"color\": [255,255,255], \"usage\": \"Casual\", \"imageBase64\": null},\n"
+        "        {\"id\": 4, \"masterCategory\": \"accessories\", \"subCategory\": \"Watch\", \"color\": [50,50,50], \"usage\": \"Formal\", \"imageBase64\": null}\n"
+        "      ]\n"
+        "    }\n"
+        "  ]\n"
+        "}\n"
+        "5. Используй JSON стандарт: отсутствующие значения — null, а не None.\n"
+    )
 
-    return get_chat_completion(auth_token, user_message)
+    response = get_chat_completion(auth_token, user_message)
+
+    # Очистка маркдауна, если есть
+    response = response.strip()
+    if response.startswith('```json'):
+        response = response[7:].strip().rstrip('```').strip()
+    elif response.startswith('```'):
+        response = response[3:].strip().rstrip('```').strip()
+
+    return response
+
+
+def extract_json_from_text(text: str) -> dict:
+    start = text.find('{')
+    end = text.rfind('}')
+    if start == -1 or end == -1:
+        raise ValueError("JSON not found in text")
+
+    json_str = text[start:end+1]
+    return json.loads(json_str)
+
+
+

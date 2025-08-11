@@ -7,7 +7,10 @@ from services.fashion_rules import FashionRules
 from services.genetic import OutfitRecommenderGA
 from services.outfit_generator import OutfitGenerator
 from services.outfit_recommender import initialize_wardrobe, OutfitRecommender
-from services.llm_weather import ask_gigachat
+from services.llm_weather import ask_gigachat, extract_json_from_text
+
+import re
+import json
 
 app = FastAPI()
 
@@ -300,24 +303,26 @@ async def generate_outfit_with_weather(request: WardrobeWeatherRequest):
             f"облачность {request.weather.cloudness}, ветер {request.weather.wind_speed} м/с "
             f"направление {request.weather.wind_dir}."
         )
-
         wardrobe_items = [item.dict() for item in request.wardrobe]
-
         llm_answer = ask_gigachat(weather_desc, wardrobe_items)
-        generated_outfits = []
+
         try:
-            import json
-            generated_outfits = json.loads(llm_answer)
-        except Exception:
+            generated_outfits = extract_json_from_text(llm_answer)
+
+            if not isinstance(generated_outfits, dict) or "generated_outfits" not in generated_outfits:
+                raise ValueError("Invalid JSON structure")
+
             return {
                 "status": "success",
+                "generated_outfits": generated_outfits["generated_outfits"]
+            }
+        except Exception as e:
+            print(f"Error parsing LLM response: {e}")
+            print(f"Original response: {llm_answer}")
+            return {
+                "status": "error",
+                "error": f"Failed to parse LLM response: {e}",
                 "llm_raw_response": llm_answer
             }
-
-        return {
-            "status": "success",
-            "generated_outfits": generated_outfits
-        }
-
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
