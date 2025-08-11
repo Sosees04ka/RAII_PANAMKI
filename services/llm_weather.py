@@ -77,27 +77,31 @@ def ask_gigachat(weather_desc: str, wardrobe_items: list):
 
     user_message = (
         f"Погода: {weather_desc}.\n"
-        f"В гардеробе следующие вещи:\n{wardrobe_text}\n\n"
+        f"В гардеробе следующие вещи (ВСЕХ, что есть, с их уникальными id):\n{wardrobe_text}\n\n"
         "Сгенерируй 3 комбинации одежды по следующим правилам:\n"
-        "1. Каждая комбинация должна содержать ровно 4 предмета (верх, низ, обувь, аксессуар)\n"
-        "2. Верни ответ ТОЛЬКО в формате JSON, без комментариев\n"
-        "3. Начни ответ сразу с открывающей фигурной скобки {\n"
-        "4. Формат должен строго соответствовать примеру:\n"
+        "1. Каждая комбинация должна содержать ровно 4 предмета: верх, низ, обувь и аксессуар.\n"
+        "2. БЕРИ id ТОЛЬКО из списка выше. Категорически запрещено придумывать новые id.\n"
+        "3. Для каждого предмета в комбинации копируй ВСЕ поля (id, masterCategory, subCategory, color, usage, imageBase64) ИЗ исходного списка.\n"
+        "4. Не менять порядок ключей в объектах.\n"
+        "5. Верни ответ ТОЛЬКО в формате JSON, без комментариев и текста вокруг.\n"
+        "6. Начни ответ сразу с открывающей фигурной скобки {\n"
+        "7. Формат ответа:\n"
         "{\n"
         "  \"generated_outfits\": [\n"
         "    {\n"
         "      \"score\": 0.85,\n"
         "      \"items\": [\n"
-        "        {\"id\": 1, \"masterCategory\": \"topwear\", \"subCategory\": \"Shirt\", \"color\": [255,0,0], \"usage\": \"Formal\", \"imageBase64\": null},\n"
-        "        {\"id\": 2, \"masterCategory\": \"bottomwear\", \"subCategory\": \"Pants\", \"color\": [0,0,0], \"usage\": \"Formal\", \"imageBase64\": null},\n"
-        "        {\"id\": 3, \"masterCategory\": \"footwear\", \"subCategory\": \"Shoes\", \"color\": [255,255,255], \"usage\": \"Casual\", \"imageBase64\": null},\n"
-        "        {\"id\": 4, \"masterCategory\": \"accessories\", \"subCategory\": \"Watch\", \"color\": [50,50,50], \"usage\": \"Formal\", \"imageBase64\": null}\n"
+        "        {\"id\": 27, \"masterCategory\": \"topwear\", \"subCategory\": \"Shirt\", \"color\": [255,0,0], \"usage\": \"Formal\", \"imageBase64\": null},\n"
+        "        {\"id\": 54, \"masterCategory\": \"bottomwear\", \"subCategory\": \"Pants\", \"color\": [0,0,0], \"usage\": \"Formal\", \"imageBase64\": null},\n"
+        "        {\"id\": 78, \"masterCategory\": \"footwear\", \"subCategory\": \"Shoes\", \"color\": [255,255,255], \"usage\": \"Casual\", \"imageBase64\": null},\n"
+        "        {\"id\": 91, \"masterCategory\": \"accessories\", \"subCategory\": \"Watch\", \"color\": [50,50,50], \"usage\": \"Formal\", \"imageBase64\": null}\n"
         "      ]\n"
         "    }\n"
         "  ]\n"
         "}\n"
-        "5. Используй JSON стандарт: отсутствующие значения — null, а не None.\n"
+        "8. Используй JSON стандарт: отсутствующие значения — null, а не None.\n"
     )
+
 
     response = get_chat_completion(auth_token, user_message)
 
