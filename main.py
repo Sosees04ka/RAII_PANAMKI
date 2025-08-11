@@ -4,6 +4,7 @@ from models.wardrobe_request import ClothRequest, ClothingItem, BaseRequest, Ima
 from services.AI_classifier import predict
 from services.dominant_color_algorithm import get_color
 from services.fashion_rules import FashionRules
+from services.genetic import OutfitRecommenderGA
 from services.outfit_generator import OutfitGenerator
 from services.outfit_recommender import initialize_wardrobe, OutfitRecommender
 from services.llm_weather import ask_gigachat
@@ -87,6 +88,54 @@ async def generate_outfit(request: ClothRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.post("/generate_outfit_ga")
+async def generate_outfit_ga(request: ClothRequest):
+    try:
+        raw_wardrobe = [request.cloth.dict()] + [item.dict() for item in request.wardrobe]
+        wardrobe = initialize_wardrobe(raw_wardrobe)
+
+        fashion_rules = FashionRules()
+        fashion_rules.load_conflicts("./util/conflicts.json")
+
+        recommender = OutfitRecommenderGA(wardrobe, fashion_rules)
+        target_cloth = wardrobe[0]
+        top_outfits = recommender.get_top_outfits_with_item(target_cloth)
+
+        generated_outfits = []
+        for outfit in top_outfits:
+            outfit_items = []
+            for item in outfit.items:
+                outfit_items.append({
+                    "id": item.id,
+                    "masterCategory": item.masterCategory,
+                    "subCategory": item.subCategory,
+                    "color": list(item.color),
+                    "usage": item.usage,
+                    "imageBase64": item.imageBase64
+                })
+
+            generated_outfits.append({
+                "score": outfit.score,
+                "items": outfit_items
+            })
+
+        return {
+            "status": "success",
+            "main_item": {
+                "id": target_cloth.id,
+                "masterCategory": target_cloth.masterCategory,
+                "subCategory": target_cloth.subCategory,
+                "color": list(target_cloth.color),
+                "usage": target_cloth.usage,
+                "imageBase64": target_cloth.imageBase64
+            },
+            "generated_outfits": generated_outfits
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.post("/generate_outfit_with_base64")
 async def generate_outfit_with_base64(request: BaseRequest):
     try:
@@ -163,11 +212,88 @@ async def generate_outfit_with_base64(request: BaseRequest):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
+
+@app.post("/generate_outfit_with_base64_ga")
+async def generate_outfit_with_base64_ga(request: BaseRequest):
+    try:
+        img64 = request.imageBase64
+        dominant_color = get_color(img64)
+        masterCategory = predict("./util/masterCategory/model.savedmodel", "./util/masterCategory/labels.txt", img64)
+        subCategory = ""
+
+        if masterCategory == "Accessories":
+            subCategory = predict("./util/accessories/model.savedmodel", "./util/accessories/labels.txt", img64)
+        elif masterCategory == "Topwear":
+            subCategory = predict("./util/topwear/model.savedmodel", "./util/topwear/labels.txt", img64)
+        elif masterCategory == "Bottomwear":
+            subCategory = predict("./util/bottomwear/model.savedmodel", "./util/bottomwear/labels.txt", img64)
+        elif masterCategory == "Footwear":
+            subCategory = predict("./util/footwear/model.savedmodel", "./util/footwear/labels.txt", img64)
+
+        style = predict("./util/style/model.savedmodel", "./util/style/labels.txt", img64)
+
+        cloth = ClothingItem(
+            id=None,
+            masterCategory=masterCategory,
+            subCategory=subCategory,
+            color=dominant_color,
+            usage=style,
+            imageBase64=img64
+        )
+
+        wardrobe_items = [item.dict() for item in request.wardrobe]
+        raw_wardrobe = [cloth.dict()] + wardrobe_items
+
+        wardrobe = initialize_wardrobe(raw_wardrobe)
+
+        fashion_rules = FashionRules()
+        fashion_rules.load_conflicts("./util/conflicts.json")
+
+        recommender = OutfitRecommenderGA(wardrobe, fashion_rules)
+        target_cloth = wardrobe[0]
+
+        top_outfits = recommender.get_top_outfits_with_item(target_cloth)
+
+        generated_outfits = []
+        for outfit in top_outfits:
+            outfit_items = []
+            for item in outfit.items:
+                outfit_items.append(
+                    {
+                        "id": item.id,
+                        "masterCategory": item.masterCategory,
+                        "subCategory": item.subCategory,
+                        "color": item.color if isinstance(item.color, list) else list(item.color),
+                        "usage": item.usage,
+                        "imageBase64": item.imageBase64
+                    }
+                )
+
+            generated_outfits.append({
+                "score": outfit.score,
+                "items": outfit_items
+            })
+
+        return {
+            "status": "success",
+            "main_item": {
+                "id": wardrobe[0].id,
+                "masterCategory": wardrobe[0].masterCategory,
+                "subCategory": wardrobe[0].subCategory,
+                "color": wardrobe[0].color if isinstance(wardrobe[0].color, list) else list(wardrobe[0].color),
+                "usage": wardrobe[0].usage,
+                "imageBase64": wardrobe[0].imageBase64
+            },
+            "generated_outfits": generated_outfits
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.post("/generate_outfit_with_weather")
 async def generate_outfit_with_weather(request: WardrobeWeatherRequest):
     try:
-        # Формируем описание погоды в текст для LLM
         weather_desc = (
             f"Погода: {request.weather.condition}, температура {request.weather.temp}°C, "
             f"ощущается как {request.weather.feels_like}°C, влажность {request.weather.humidity}%, "
@@ -175,22 +301,14 @@ async def generate_outfit_with_weather(request: WardrobeWeatherRequest):
             f"направление {request.weather.wind_dir}."
         )
 
-        # Преобразуем гардероб в список словарей
         wardrobe_items = [item.dict() for item in request.wardrobe]
 
-        # Отправляем в LLM
         llm_answer = ask_gigachat(weather_desc, wardrobe_items)
-
-        # В этом месте нужно либо парсить ответ LLM в JSON с outfit'ами,
-        # либо возвращать как есть, если LLM выдаёт строку.
-
-        # Предположим, что llm_answer — это JSON-строка с нужной структурой
         generated_outfits = []
         try:
             import json
             generated_outfits = json.loads(llm_answer)
         except Exception:
-            # Если не удалось распарсить, вернуть строку LLM
             return {
                 "status": "success",
                 "llm_raw_response": llm_answer
