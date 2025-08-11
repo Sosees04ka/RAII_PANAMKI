@@ -17,10 +17,10 @@ class OutfitGenerator:
     def categorized_wardrobe(self) -> Dict[str, List[Cloth]]:
         if self._categorized_wardrobe is None:
             self._categorized_wardrobe = {
-                "topwear": [i for i in self.wardrobe if i.masterCategory == "topwear"],
-                "bottomwear": [i for i in self.wardrobe if i.masterCategory == "bottomwear"],
-                "footwear": [i for i in self.wardrobe if i.masterCategory == "footwear"],
-                "accessories": [i for i in self.wardrobe if i.masterCategory == "accessories"]
+                "Topwear": [i for i in self.wardrobe if i.masterCategory == "Topwear"],
+                "Bottomwear": [i for i in self.wardrobe if i.masterCategory == "Bottomwear"],
+                "Footwear": [i for i in self.wardrobe if i.masterCategory == "Footwear"],
+                "Accessories": [i for i in self.wardrobe if i.masterCategory == "Accessories"]
             }
         return self._categorized_wardrobe
 
@@ -28,15 +28,15 @@ class OutfitGenerator:
         outfits = []
         categories = self.categorized_wardrobe
 
-        for top in categories["topwear"]:
+        for top in categories["Topwear"]:
             if top.subCategory in ["Dresses", "Jumpsuit", "Tracksuits"]:
-                for shoes in categories["footwear"]:
-                    for accessory in categories["accessories"]:
+                for shoes in categories["Footwear"]:
+                    for accessory in categories["Accessories"]:
                         outfits.append(Outfit(top, None, shoes, accessory))
             else:
-                for bottom in categories["bottomwear"]:
-                    for shoes in categories["footwear"]:
-                        for accessory in categories["accessories"]:
+                for bottom in categories["Bottomwear"]:
+                    for shoes in categories["Footwear"]:
+                        for accessory in categories["Accessories"]:
                             outfits.append(Outfit(top, bottom, shoes, accessory))
 
         return outfits

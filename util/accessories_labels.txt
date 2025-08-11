@@ -1,0 +1,19 @@
+0 Backpacks
+1 Bag
+2 Belts
+3 Bracelet
+4 Caps
+5 Earrings
+6 Gloves
+7 Handbags
+8 Hat
+9 Headband
+10 Jewellery Se...
+11 Ring
+12 Scarves
+13 Socks
+14 Sunglasses
+15 Ties
+16 Umbrellas
+17 Wallets
+18 Watches

@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 
 from models.wardrobe_request import ClothRequest, ClothingItem, BaseRequest
+from services.AI_classifier import classify_style, classify_masterCategory, classify_subCategory
 from services.dominant_color_algorithm import get_color
 from services.fashion_rules import FashionRules
 from services.outfit_generator import OutfitGenerator
@@ -8,27 +9,19 @@ from services.outfit_recommender import initialize_wardrobe, OutfitRecommender
 
 app = FastAPI()
 
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
-
-
-@app.post("/test_color")
-async def test_color(str_img: str):
+@app.post("/add_cloth_to_wardrobe")
+async def add_cloth_to_wardrobe(img64: str):
     try:
-        dominant_color = get_color(str_img)
+        dominant_color = get_color(img64)
+        masterCategory = classify_masterCategory(img64)
+        subCategory = classify_subCategory(masterCategory, img64)
+        style = classify_style(img64)
         return {
-            "dominant_color": {
-                "red": int(dominant_color[0]),
-                "green": int(dominant_color[1]),
-                "blue": int(dominant_color[2])
-            }
+            "masterCategory": masterCategory,
+            "subCategory": subCategory,
+            "color": dominant_color if isinstance(dominant_color, list) else list(dominant_color),
+            "usage": style,
+            "imageBase64": img64
         }
     except HTTPException as e:
         raise e
@@ -85,12 +78,12 @@ async def generate_outfit(request: ClothRequest):
 @app.post("/generate_outfit_with_base64")
 async def generate_outfit_with_base64(request: BaseRequest):
     try:
-        color = get_color(request.imageBase64)
+        img64 = request.imageBase64
+        color = get_color(img64)
 
-        subCategory = "Shorts"
-        masterCategory = "bottomwear"
-        usage = "Sports"
-        imageBase64 = request.imageBase64
+        masterCategory = classify_masterCategory(img64)
+        subCategory = classify_subCategory(masterCategory, img64)
+        usage = classify_style(img64)
 
         cloth = ClothingItem(
             id=None,
@@ -98,7 +91,7 @@ async def generate_outfit_with_base64(request: BaseRequest):
             subCategory=subCategory,
             color=color,
             usage=usage,
-            imageBase64=imageBase64
+            imageBase64=img64
         )
 
         wardrobe_items = [item.dict() for item in request.wardrobe]

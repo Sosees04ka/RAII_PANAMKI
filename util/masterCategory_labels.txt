@@ -1,0 +1,4 @@
+0 Accessories
+1 Bottomwear
+2 Footwear
+3 Topwear
