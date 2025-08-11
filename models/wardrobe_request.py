@@ -28,3 +28,33 @@ class BaseRequest(BaseModel):
 
 class ImageRequest(BaseModel):
     img64: str
+
+class WeatherDescription(BaseModel):
+    daytime: str
+    obs_time: int
+    season: str
+    source: str
+    uptime: int
+    cloudness: int
+    condition: str
+    feels_like: int
+    humidity: int
+    icon: str
+    is_thunder: bool
+    polar: bool
+    prec_prob: int
+    prec_strength: int
+    prec_type: int
+    pressure_mm: int
+    pressure_pa: int
+    temp: int
+    uv_index: int
+    visibility: int
+    wind_angle: int
+    wind_dir: str
+    wind_gust: float
+    wind_speed: int
+
+class WardrobeWeatherRequest(BaseModel):
+    wardrobe: List[ClothingItem]
+    weather: WeatherDescription

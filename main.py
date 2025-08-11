@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 
-from models.wardrobe_request import ClothRequest, ClothingItem, BaseRequest, ImageRequest
+from models.wardrobe_request import ClothRequest, ClothingItem, BaseRequest, ImageRequest, WardrobeWeatherRequest
 from services.AI_classifier import predict
 from services.dominant_color_algorithm import get_color
 from services.fashion_rules import FashionRules
@@ -164,18 +164,42 @@ async def generate_outfit_with_base64(request: BaseRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
-@app.post("/generate_outfit_llm")
-async def generate_outfit_llm(request: BaseRequest):
+@app.post("/generate_outfit_with_weather")
+async def generate_outfit_with_weather(request: WardrobeWeatherRequest):
     try:
-        # Здесь просто передаем wardrobe в LLM + погодное описание
-        weather_description = "солнечно, +20°C"  # временно жестко задано, потом можно динамически
+        # Формируем описание погоды в текст для LLM
+        weather_desc = (
+            f"Погода: {request.weather.condition}, температура {request.weather.temp}°C, "
+            f"ощущается как {request.weather.feels_like}°C, влажность {request.weather.humidity}%, "
+            f"облачность {request.weather.cloudness}, ветер {request.weather.wind_speed} м/с "
+            f"направление {request.weather.wind_dir}."
+        )
+
+        # Преобразуем гардероб в список словарей
         wardrobe_items = [item.dict() for item in request.wardrobe]
 
-        llm_answer = ask_gigachat(weather_description, wardrobe_items)
+        # Отправляем в LLM
+        llm_answer = ask_gigachat(weather_desc, wardrobe_items)
+
+        # В этом месте нужно либо парсить ответ LLM в JSON с outfit'ами,
+        # либо возвращать как есть, если LLM выдаёт строку.
+
+        # Предположим, что llm_answer — это JSON-строка с нужной структурой
+        generated_outfits = []
+        try:
+            import json
+            generated_outfits = json.loads(llm_answer)
+        except Exception:
+            # Если не удалось распарсить, вернуть строку LLM
+            return {
+                "status": "success",
+                "llm_raw_response": llm_answer
+            }
 
         return {
             "status": "success",
-            "llm_suggestion": llm_answer
+            "generated_outfits": generated_outfits
         }
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
