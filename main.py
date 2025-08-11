@@ -6,6 +6,7 @@ from services.dominant_color_algorithm import get_color
 from services.fashion_rules import FashionRules
 from services.outfit_generator import OutfitGenerator
 from services.outfit_recommender import initialize_wardrobe, OutfitRecommender
+from services.llm_weather import ask_gigachat
 
 app = FastAPI()
 
@@ -160,5 +161,21 @@ async def generate_outfit_with_base64(request: BaseRequest):
             "generated_outfits": generated_outfits
         }
 
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post("/generate_outfit_llm")
+async def generate_outfit_llm(request: BaseRequest):
+    try:
+        # Здесь просто передаем wardrobe в LLM + погодное описание
+        weather_description = "солнечно, +20°C"  # временно жестко задано, потом можно динамически
+        wardrobe_items = [item.dict() for item in request.wardrobe]
+
+        llm_answer = ask_gigachat(weather_description, wardrobe_items)
+
+        return {
+            "status": "success",
+            "llm_suggestion": llm_answer
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

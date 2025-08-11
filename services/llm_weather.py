@@ -9,8 +9,6 @@ auth = "NjYzN2UwMDYtZThjYy00NGEyLTg4YzgtNDNkYTY4NzMyY2JkOjRmMmM5ZmQ0LWZhMDMtNDU5
 credentials = f"{client_id}:{secret}"
 encoded_credentials = base64.b64encode(credentials.encode('utf-8')).decode('utf-8')
 
-if encoded_credentials != auth:
-    raise Exception("Credentials do not match")
 
 def get_token(auth_token, scope='GIGACHAT_API_PERS'):
     rq_uid = str(uuid.uuid4())
@@ -30,7 +28,8 @@ def get_token(auth_token, scope='GIGACHAT_API_PERS'):
         print(f"Ошибка: {str(e)}")
         return None
 
-giga_token = get_token(auth)
+def get_giga_token():
+    return get_token(auth)
 
 def get_chat_completion(auth_token, user_message):
     url = "https://gigachat.devices.sberbank.ru/api/v1/chat/completions"
@@ -59,3 +58,22 @@ def get_chat_completion(auth_token, user_message):
     except requests.RequestException as e:
         print(f"Произошла ошибка: {str(e)}")
         return "Ошибка в запросе к нейронной сети"
+    
+    
+def ask_gigachat(weather_desc: str, wardrobe_items: list):
+    auth_token = get_giga_token()
+    if not auth_token:
+        return "Не удалось получить токен GigaChat"
+
+    # Формируем сообщение для LLM
+    user_message = (
+        "У меня есть следующая погода: "
+        f"{weather_desc}. "
+        "В гардеробе следующие вещи:\n"
+    )
+    for i, item in enumerate(wardrobe_items, start=1):
+        user_message += f"{i}. {item['masterCategory']} / {item['subCategory']}, цвет {item['color']}, стиль {item['usage']}\n"
+
+    user_message += "Предложи 3 лучших комбинации одежды для этой погоды."
+
+    return get_chat_completion(auth_token, user_message)
