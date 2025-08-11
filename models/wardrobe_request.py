@@ -53,7 +53,7 @@ class WeatherDescription(BaseModel):
     wind_angle: int
     wind_dir: str
     wind_gust: float
-    wind_speed: int
+    wind_speed: float
 
 class WardrobeWeatherRequest(BaseModel):
     wardrobe: List[ClothingItem]
