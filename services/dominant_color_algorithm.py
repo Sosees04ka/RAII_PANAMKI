@@ -14,6 +14,9 @@ def get_dominant_color(image, k=3, mask=None):
         masked_image = cv2.bitwise_and(image, image, mask=mask)
         pixels = masked_image[mask > 0].reshape(-1, 3)
 
+    if len(pixels) == 0:
+        return np.array([0, 0, 0]), 0.0, np.zeros((k, 3)), np.zeros(k)
+
     kmeans = KMeans(n_clusters=k, n_init=10)
     kmeans.fit(pixels)
 
@@ -43,6 +46,9 @@ def segment_clothing_improved(image):
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7))
     combined_mask = cv2.morphologyEx(combined_mask, cv2.MORPH_CLOSE, kernel)
     combined_mask = cv2.morphologyEx(combined_mask, cv2.MORPH_OPEN, kernel)
+
+    if np.all(combined_mask == 0):
+        return np.ones_like(combined_mask) * 255
 
     return combined_mask
 
