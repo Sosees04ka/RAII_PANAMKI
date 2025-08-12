@@ -115,9 +115,10 @@ class LookOneFragment : Fragment(),LookListener {
     }
 
 
-    private fun showToast(message: String) {
-        Log.d("msg",message)
-        Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
+    fun showToast(message: String) {
+        context?.let {
+            Toast.makeText(it, message, Toast.LENGTH_SHORT).show()
+        }
     }
 
 }

@@ -187,8 +187,10 @@ class PhotoLookFragment : Fragment(),LookListener {
             .addToBackStack(null)
             .commit()
     }
-    private fun showToast(message: String) {
-        Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
+    fun showToast(message: String) {
+        context?.let {
+            Toast.makeText(it, message, Toast.LENGTH_SHORT).show()
+        }
     }
 
 }
