@@ -48,17 +48,23 @@ class LookAddFragment : Fragment(),LookListener {
 
         val buttonLookWeather = view.findViewById<FrameLayout>(R.id.buttonLookWeather)
         buttonLookWeather.setOnClickListener {
+            buttonLookWeather.isEnabled=false
+            buttonLookWeather.isClickable=false
             getLocation()
         }
         val buttonPhoto = view.findViewById<FrameLayout>(R.id.buttonLookPhoto)
         val buttonLookWithCloth = view.findViewById<FrameLayout>(R.id.buttonLookWithCloth)
         buttonLookWithCloth.setOnClickListener {
+            buttonLookWithCloth.isEnabled=false
+            buttonLookWithCloth.isClickable=false
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ClothFragmentList())
                 .addToBackStack(null)
                 .commit()
         }
         buttonPhoto.setOnClickListener{
+            buttonPhoto.isEnabled=false
+            buttonPhoto.isClickable=false
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, PhotoLookFragment())
                 .addToBackStack(null)

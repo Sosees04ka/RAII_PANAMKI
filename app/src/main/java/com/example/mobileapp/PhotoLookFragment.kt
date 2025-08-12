@@ -78,6 +78,8 @@ class PhotoLookFragment : Fragment(),LookListener {
         buttonAddClothTo=view.findViewById(R.id.buttonAddClothTo)
         buttonAddClothTo.setOnClickListener{
             val imageBitmap = (imageViewPhoto.drawable as? BitmapDrawable)?.bitmap
+            buttonAddClothTo.isEnabled=false
+            buttonAddClothTo.isClickable=false
             lookController.getLooksByPhoto(textView.text.toString(),imageBitmap)
         }
         imageViewPhoto = view.findViewById(R.id.imageViewPhoto)
