@@ -1,16 +1,13 @@
 from fastapi import FastAPI, HTTPException
 
 from models.wardrobe_request import ClothRequest, ClothingItem, BaseRequest, ImageRequest, WardrobeWeatherRequest
-from services.AI_classifier import predict
+from services.AI_classifier import predict_style, predict_masterCategory, predict_subCategory
 from services.dominant_color_algorithm import get_color
 from services.fashion_rules import FashionRules
 from services.genetic import OutfitRecommenderGA
 from services.outfit_generator import OutfitGenerator
 from services.outfit_recommender import initialize_wardrobe, OutfitRecommender
 from services.llm_weather import ask_gigachat, extract_json_from_text
-
-import re
-import json
 
 app = FastAPI()
 
@@ -19,19 +16,10 @@ async def add_cloth_to_wardrobe(request: ImageRequest):
     try:
         img64 = request.img64
         dominant_color = get_color(img64)
-        masterCategory = predict("./util/masterCategory/model.savedmodel", "./util/masterCategory/labels.txt", img64)
-        subCategory = ""
+        masterCategory = predict_masterCategory(img64)
+        subCategory = predict_subCategory(img64, masterCategory)
 
-        if masterCategory == "Accessories":
-            subCategory = predict("./util/accessories/model.savedmodel", "./util/accessories/labels.txt", img64)
-        elif masterCategory == "Topwear":
-            subCategory = predict("./util/topwear/model.savedmodel", "./util/topwear/labels.txt", img64)
-        elif masterCategory == "Bottomwear":
-            subCategory = predict("./util/bottomwear/model.savedmodel", "./util/bottomwear/labels.txt", img64)
-        elif masterCategory == "Footwear":
-            subCategory = predict("./util/footwear/model.savedmodel", "./util/footwear/labels.txt", img64)
-
-        style = predict("./util/style/model.savedmodel", "./util/style/labels.txt", img64)
+        style = predict_style(img64)
         return {
                 "masterCategory": masterCategory,
                 "subCategory": subCategory,
@@ -144,19 +132,10 @@ async def generate_outfit_with_base64(request: BaseRequest):
     try:
         img64 = request.imageBase64
         dominant_color = get_color(img64)
-        masterCategory = predict("./util/masterCategory/model.savedmodel", "./util/masterCategory/labels.txt", img64)
-        subCategory = ""
+        masterCategory = predict_masterCategory(img64)
+        subCategory = predict_subCategory(img64, masterCategory)
 
-        if masterCategory == "Accessories":
-            subCategory = predict("./util/accessories/model.savedmodel", "./util/accessories/labels.txt", img64)
-        elif masterCategory == "Topwear":
-            subCategory = predict("./util/topwear/model.savedmodel", "./util/topwear/labels.txt", img64)
-        elif masterCategory == "Bottomwear":
-            subCategory = predict("./util/bottomwear/model.savedmodel", "./util/bottomwear/labels.txt", img64)
-        elif masterCategory == "Footwear":
-            subCategory = predict("./util/footwear/model.savedmodel", "./util/footwear/labels.txt", img64)
-
-        style = predict("./util/style/model.savedmodel", "./util/style/labels.txt", img64)
+        style = predict_style(img64)
 
         cloth = ClothingItem(
             id=None,
@@ -221,19 +200,10 @@ async def generate_outfit_with_base64_ga(request: BaseRequest):
     try:
         img64 = request.imageBase64
         dominant_color = get_color(img64)
-        masterCategory = predict("./util/masterCategory/model.savedmodel", "./util/masterCategory/labels.txt", img64)
-        subCategory = ""
+        masterCategory = predict_masterCategory(img64)
+        subCategory = predict_subCategory(img64, masterCategory)
 
-        if masterCategory == "Accessories":
-            subCategory = predict("./util/accessories/model.savedmodel", "./util/accessories/labels.txt", img64)
-        elif masterCategory == "Topwear":
-            subCategory = predict("./util/topwear/model.savedmodel", "./util/topwear/labels.txt", img64)
-        elif masterCategory == "Bottomwear":
-            subCategory = predict("./util/bottomwear/model.savedmodel", "./util/bottomwear/labels.txt", img64)
-        elif masterCategory == "Footwear":
-            subCategory = predict("./util/footwear/model.savedmodel", "./util/footwear/labels.txt", img64)
-
-        style = predict("./util/style/model.savedmodel", "./util/style/labels.txt", img64)
+        style = predict_style(img64)
 
         cloth = ClothingItem(
             id=None,
