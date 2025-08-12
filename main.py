@@ -17,9 +17,8 @@ async def add_cloth_to_wardrobe(request: ImageRequest):
         img64 = request.img64
         dominant_color = get_color(img64)
         masterCategory = predict_masterCategory(img64)
-        subCategory = predict_subCategory(img64, masterCategory)
-
         style = predict_style(img64)
+        subCategory = predict_subCategory(img64, masterCategory)
         return {
                 "masterCategory": masterCategory,
                 "subCategory": subCategory,
