@@ -35,6 +35,6 @@ interface LookService {
     ): Call<MutableList<GeneratedOutfitsInfo>>
 
 
-    @GET("api/look/picture")
+    @POST("api/look/picture")
     fun getPhotoLook(@Body request:ClothRequest):Call<MutableList<GeneratedOutfitsInfo>>
 }

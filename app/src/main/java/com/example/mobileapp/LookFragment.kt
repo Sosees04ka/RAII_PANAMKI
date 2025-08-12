@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -28,6 +30,7 @@ class LookFragment : Fragment(),LookListener {
     private lateinit var emptyView: LinearLayout
     private var lookList:MutableList<GeneratedOutfitsInfo> = mutableListOf()
     private lateinit var lookController: LookController
+    private lateinit var fab_add_look: AppCompatImageButton
     private lateinit var productAdapter: LooksAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +51,7 @@ class LookFragment : Fragment(),LookListener {
             requireActivity().finish()
         }
         productAdapter = LooksAdapter(lookList)
-
+        fab_add_look = view.findViewById(R.id.fab_add_look)
         emptyView = view.findViewById(R.id.empty_view)
         fabAdd = view.findViewById(R.id.fab_add_look)
         recyclerView = view.findViewById(R.id.recyclerView)
@@ -56,7 +59,12 @@ class LookFragment : Fragment(),LookListener {
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = productAdapter
         updateEmptyView()
-
+        fab_add_look.setOnClickListener{
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, LookAddFragment())
+                .addToBackStack(null)
+                .commit()
+        }
         val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout)
 
         swipeRefreshLayout.setOnChildScrollUpCallback { _, _ ->
