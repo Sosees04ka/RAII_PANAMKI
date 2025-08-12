@@ -53,3 +53,7 @@ app/
 3. Запустите на эмуляторе или физическом устройстве (Android 8.0+)
 
 ---
+
+APK: https://drive.google.com/file/d/1mcolpwvkLorYB6plansg6yWEOBSkbfYF/view?usp=sharing
+
+---
