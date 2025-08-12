@@ -14,7 +14,7 @@ enum ClothCategory: string
     case Handbags = 'Handbags';
     case Hat = 'Hat';
     case Headband = 'Headband';
-    case JewellerySet = 'JewellerySet';
+    case JewellerySet = 'Jewellery Set';
     case Ring = 'Ring';
     case Scarves = 'Scarves';
     case Socks = 'Socks';
