@@ -19,19 +19,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import com.example.mobileapp.controllers.ClothController
+import com.example.mobileapp.controllers.LookController
 import com.example.mobileapp.controllers.listeners.AuthController
 import com.example.mobileapp.controllers.listeners.ClothListener
+import com.example.mobileapp.controllers.listeners.LookListener
 import com.example.mobileapp.models.cloth.ClothInfo
 import com.example.mobileapp.models.cloth.ClothPreview
 import com.example.mobileapp.models.look.GeneratedOutfitsInfo
 import java.io.File
 import java.io.IOException
 
-class ClothAddFragment : Fragment(),ClothListener {
+class PhotoLookFragment : Fragment(),LookListener {
     private lateinit var imageViewPhoto: ImageView
     private var cameraImageUri: Uri? = null
     private lateinit var buttonAddClothTo:AppCompatButton
-    private lateinit var clothController: ClothController
+    private lateinit var lookController: LookController
     private lateinit var textView:EditText
     private val galleryResult = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
@@ -66,9 +68,9 @@ class ClothAddFragment : Fragment(),ClothListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_cloth_add, container, false)
-        clothController = ClothController(requireActivity(), this)
-        if (clothController.checkAuthorization()) {
+        val view = inflater.inflate(R.layout.fragment_photo_look, container, false)
+        lookController = LookController(requireActivity(), this)
+        if (lookController.checkAuthorization()) {
             requireActivity().startActivity(Intent(requireContext(), LoginActivity::class.java))
             requireActivity().finish()
         }
@@ -76,7 +78,7 @@ class ClothAddFragment : Fragment(),ClothListener {
         buttonAddClothTo=view.findViewById(R.id.buttonAddClothTo)
         buttonAddClothTo.setOnClickListener{
             val imageBitmap = (imageViewPhoto.drawable as? BitmapDrawable)?.bitmap
-            clothController.addCloth(textView.text.toString(),imageBitmap)
+            lookController.getLooksByPhoto(textView.text.toString(),imageBitmap)
         }
         imageViewPhoto = view.findViewById(R.id.imageViewPhoto)
         view.findViewById<View>(R.id.buttonSelectPhoto).setOnClickListener {
@@ -166,23 +168,29 @@ class ClothAddFragment : Fragment(),ClothListener {
         requireActivity().finish()
     }
 
-    override fun onClothInfoReceived(clothInfo: ClothInfo?) {
+    override fun onOutfitInfoReceived(outfit: GeneratedOutfitsInfo?) {
         TODO("Not yet implemented")
     }
 
-    override fun onListCloth(clothes: MutableList<ClothPreview>) {
+    override fun onLookLiked(lookId: Long) {
         TODO("Not yet implemented")
     }
 
-    override fun onGeneratedOutfitsInfo(list: MutableList<GeneratedOutfitsInfo>) {
-        TODO("Not yet implemented")
+    override fun onLookReceived(list: MutableList<GeneratedOutfitsInfo>) {
+        val fragment = WardrobeGenByClothFragment().apply {
+            arguments = Bundle().apply {
+                putSerializable("generatedOutfitsList", ArrayList(list))
+            }
+        }
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
-
-    override fun onClothRemoved() {
-        TODO("Not yet implemented")
-    }
-
     private fun showToast(message: String) {
         Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
     }
+
 }
+
+

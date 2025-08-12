@@ -15,11 +15,24 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- Горизонтальный список -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <!-- Заголовок -->
+        <TextView
+            android:id="@+id/outfitTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="SCORE"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_alignParentTop="true" />
+
+        <!-- Горизонтальный список -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/horizontalRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/outfitTitle"
             android:layout_marginTop="12dp"
             android:orientation="horizontal"
             android:overScrollMode="never" />

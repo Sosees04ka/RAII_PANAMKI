@@ -18,6 +18,7 @@ import com.example.mobileapp.models.cloth.ClothListResponse
 import com.example.mobileapp.models.cloth.ClothPreview
 import com.example.mobileapp.models.cloth.ClothRequest
 import com.example.mobileapp.models.cloth.ClothResponse
+import com.example.mobileapp.models.look.GeneratedOutfitsInfo
 import com.example.mobileapp.userStorage.UserPreferences
 import com.example.mobileapp.utils.Utils
 import org.json.JSONObject
@@ -69,6 +70,40 @@ class ClothController(private val context: Context, private val listener: ClothL
                 listener.onMessage("Ошибка сети: ${t.message}")
             }
         })
+    }
+
+    fun getGeneratedOutfitByCloth(clothId: Long) {
+        val call = apiService.getOutfitWithCloth(clothId)
+
+        call.enqueue(object : Callback<MutableList<GeneratedOutfitsInfo>> {
+            override fun onResponse(
+                call: Call<MutableList<GeneratedOutfitsInfo>>,
+                response: Response<MutableList<GeneratedOutfitsInfo>>
+            ) {
+                if (response.isSuccessful) {
+                    val productResponse = response.body()
+                    if (!productResponse.isNullOrEmpty()) {
+                        productResponse.forEach { outfit ->
+                            Log.d("Scores", "Score: ${outfit.score}")
+                        }
+                        listener.onGeneratedOutfitsInfo(productResponse)
+                    } else {
+                        listener.onMessage("Образы не найдены")
+                    }
+                } else {
+                    handleErrorResponse(response)
+                }
+            }
+
+            override fun onFailure(call: Call<MutableList<GeneratedOutfitsInfo>>, t: Throwable) {
+                listener.onMessage("Ошибка сети: ${t.message}")
+                Log.d("аваыаыва", t.message.toString())
+            }
+
+
+        })
+
+
     }
 
     fun addCloth(name: String, image: Bitmap?) {
@@ -135,6 +170,7 @@ class ClothController(private val context: Context, private val listener: ClothL
 
                     override fun onFailure(call: Call<ClothResponse>, t: Throwable) {
                         listener.onMessage("Ошибка сети: ${t.message}")
+                        Log.d("аваыаыва", t.message.toString())
                     }
                 })
             }

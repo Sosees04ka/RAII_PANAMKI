@@ -1,0 +1,123 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/card_background"
+    android:layout_margin="8dp"
+    android:padding="16dp">
+
+    <!-- Изображение товара -->
+    <ImageView
+        android:id="@+id/picture"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/tshirt_example"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Название товара -->
+    <TextView
+        android:id="@+id/nameCloth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Название вещи"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Обертка для GridLayout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_grid_background"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp">
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="4"
+            android:padding="4dp">
+
+            <!-- Подкатегория -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Подкатегория:"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:paddingVertical="2dp" />
+
+            <TextView
+                android:id="@+id/subCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="пусто"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:paddingVertical="2dp" />
+
+            <!-- Цвет -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Цвет:"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:paddingVertical="2dp" />
+
+            <ImageView
+                android:id="@+id/color"
+                android:layout_width="24dp"
+                android:layout_height="10dp"
+                android:background="@color/red"
+                android:layout_gravity="center_vertical" />
+
+            <!-- Главная категория -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Главная категория:"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:paddingVertical="2dp" />
+
+            <TextView
+                android:id="@+id/masterCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="пусто"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:paddingVertical="2dp" />
+
+            <!-- Стиль -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Стиль:"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:paddingVertical="2dp" />
+
+            <TextView
+                android:id="@+id/usage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="пусто"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:paddingVertical="2dp" />
+        </GridLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

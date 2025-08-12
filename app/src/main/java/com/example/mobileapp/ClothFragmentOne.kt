@@ -14,13 +14,16 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.widget.AppCompatButton
 import com.example.mobileapp.controllers.ClothController
+import com.example.mobileapp.controllers.LookController
 import com.example.mobileapp.controllers.listeners.ClothListener
 import com.example.mobileapp.models.cloth.ClothInfo
 import com.example.mobileapp.models.cloth.ClothPreview
+import com.example.mobileapp.models.look.GeneratedOutfitsInfo
 import com.example.mobileapp.utils.Utils
 
 class ClothFragmentOne : Fragment(), ClothListener {
     private lateinit var buttonRemove: AppCompatButton
+    private lateinit var buttonWardrobe:AppCompatButton
     interface OnBackToWardrobeListener {
         fun onBackToWardrobe()
     }
@@ -45,8 +48,6 @@ class ClothFragmentOne : Fragment(), ClothListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         clothController = ClothController(requireContext(), this)
-
-        // Получаем clothId из аргументов
         clothId = arguments?.getLong("clothId", -1) ?: -1
     }
 
@@ -54,6 +55,10 @@ class ClothFragmentOne : Fragment(), ClothListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (clothController.checkAuthorization()) {
+            requireActivity().startActivity(Intent(requireContext(), LoginActivity::class.java))
+            requireActivity().finish()
+        }
         return inflater.inflate(R.layout.fragment_cloth_one, container, false)
     }
 
@@ -61,18 +66,23 @@ class ClothFragmentOne : Fragment(), ClothListener {
         super.onViewCreated(view, savedInstanceState)
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            // Заменяем текущий фрагмент на ClothFragment
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ClothFragment())
                 .commit()
-
-            // Уведомляем активити обновить выдление в навбаре
             backListener?.onBackToWardrobe()
         }
         buttonRemove=view.findViewById(R.id.deleteCloth)
+        buttonWardrobe = view.findViewById(R.id.addWardrobe)
         buttonRemove.setOnClickListener{
             if (clothId != -1L) {
                 clothController.removeCloth(clothId)
+            } else {
+                showToast("ID вещи не передан")
+            }
+        }
+        buttonWardrobe.setOnClickListener{
+            if (clothId != -1L) {
+                clothController.getGeneratedOutfitByCloth(clothId)
             } else {
                 showToast("ID вещи не передан")
             }
@@ -104,18 +114,18 @@ class ClothFragmentOne : Fragment(), ClothListener {
 
                 val color = android.graphics.Color.rgb(r, g, b)
 
-                val colorView: View = requireView().findViewById(R.id.color)
-                colorView.setBackgroundColor(color)
+                val colorView: View? = view?.findViewById(R.id.color)
+                colorView?.setBackgroundColor(color)
                 if (it.picture != null && it.picture != "none") {
                     val imageBytes = Utils.decodeBase64(it.picture)
-                    requireView().findViewById<ImageView>(R.id.picture).setImageBitmap(imageBytes)
+                    view?.findViewById<ImageView>(R.id.picture)?.setImageBitmap(imageBytes)
                 } else {
-                    requireView().findViewById<ImageView>(R.id.picture).setImageResource(R.drawable.photo)
+                    view?.findViewById<ImageView>(R.id.picture)?.setImageResource(R.drawable.photo)
                 }
-                requireView().findViewById<TextView>(R.id.nameCloth).text = it.product_display_name
-                requireView().findViewById<TextView>(R.id.subCategory).text = it.sub_category
-                requireView().findViewById<TextView>(R.id.masterCategory).text = it.master_category
-                requireView().findViewById<TextView>(R.id.usage).text = it.usage
+                view?.findViewById<TextView>(R.id.nameCloth)?.text = it.product_display_name
+                view?.findViewById<TextView>(R.id.subCategory)?.text = it.sub_category
+                view?.findViewById<TextView>(R.id.masterCategory)?.text = it.master_category
+                view?.findViewById<TextView>(R.id.usage)?.text = it.usage
             } catch (e: Exception) {
                 showToast("Ошибка обработки цвета: ${e.message}")
             }
@@ -125,6 +135,19 @@ class ClothFragmentOne : Fragment(), ClothListener {
     override fun onListCloth(clothes: MutableList<ClothPreview>) {
         TODO("Not yet implemented")
     }
+
+    override fun onGeneratedOutfitsInfo(list: MutableList<GeneratedOutfitsInfo>) {
+        val fragment = WardrobeGenByClothFragment().apply {
+            arguments = Bundle().apply {
+                putSerializable("generatedOutfitsList", ArrayList(list))
+            }
+        }
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
 
     override fun onClothRemoved() {
         parentFragmentManager.beginTransaction()

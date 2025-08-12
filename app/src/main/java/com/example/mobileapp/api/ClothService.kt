@@ -5,6 +5,7 @@ import com.example.mobileapp.models.cloth.ClothListResponse
 import com.example.mobileapp.models.cloth.ClothPreview
 import com.example.mobileapp.models.cloth.ClothRequest
 import com.example.mobileapp.models.cloth.ClothResponse
+import com.example.mobileapp.models.look.GeneratedOutfitsInfo
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -24,4 +25,7 @@ interface ClothService {
 
     @GET("/api/cloth/preview")
     fun getClothPreviewList():Call<MutableList<ClothPreview>>
+
+    @GET("/api/look/cloth/{id}")
+    fun getOutfitWithCloth(@Path("id") clothId: Long):Call<MutableList<GeneratedOutfitsInfo>>
 }

@@ -19,9 +19,8 @@ import com.example.mobileapp.models.cloth.ClothInfo
 import com.example.mobileapp.models.cloth.ClothPreview
 import com.example.mobileapp.models.look.GeneratedOutfitsInfo
 
-class ClothFragment : Fragment(), ClothListener {
+class ClothFragmentList : Fragment(), ClothListener {
 
-    private lateinit var fabAdd: ImageButton
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyView: LinearLayout
     private lateinit var clothController: ClothController
@@ -32,7 +31,7 @@ class ClothFragment : Fragment(), ClothListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_cloth_list, container, false)
 
         recyclerView = view.findViewById(R.id.recyclerView)
         productList = mutableListOf()
@@ -42,19 +41,11 @@ class ClothFragment : Fragment(), ClothListener {
         recyclerView.setHasFixedSize(true) // ✅ Оптимизация списка
 
         emptyView = view.findViewById(R.id.empty_view)
-        fabAdd = view.findViewById(R.id.fab_add)
         clothController = ClothController(requireActivity(), this)
 
         if (clothController.checkAuthorization()) {
             requireActivity().startActivity(Intent(requireContext(), LoginActivity::class.java))
             requireActivity().finish()
-        }
-
-        fabAdd.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, ClothAddFragment())
-                .addToBackStack(null)
-                .commit()
         }
 
         updateList()
@@ -73,17 +64,7 @@ class ClothFragment : Fragment(), ClothListener {
         }
 
         productAdapter.onItemClickListener = { product ->
-            val bundle = Bundle().apply {
-                putLong("clothId", product.id)
-            }
-            val fragment = ClothFragmentOne().apply {
-                arguments = bundle
-            }
-            val fragmentManager = (context as? FragmentActivity)?.supportFragmentManager
-            fragmentManager?.popBackStack()
-            fragmentManager?.beginTransaction()
-                ?.replace(R.id.fragment_container, fragment)
-                ?.commit()
+            clothController.getGeneratedOutfitByCloth(product.id)
         }
 
         return view
@@ -123,7 +104,15 @@ class ClothFragment : Fragment(), ClothListener {
     }
 
     override fun onGeneratedOutfitsInfo(list: MutableList<GeneratedOutfitsInfo>) {
-        // Не используется в этом фрагменте
+        val fragment = WardrobeGenByClothFragment().apply {
+            arguments = Bundle().apply {
+                putSerializable("generatedOutfitsList", ArrayList(list))
+            }
+        }
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onClothRemoved() {

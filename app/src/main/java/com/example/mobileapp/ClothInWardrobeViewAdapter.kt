@@ -12,23 +12,15 @@ import com.example.mobileapp.models.cloth.ClothPreview
 import com.example.mobileapp.utils.Utils
 
 
-class MyClothRecyclerViewAdapter(
+class ClothInWardrobeViewAdapter(
     private val items: MutableList<ClothPreview>
-) : RecyclerView.Adapter<MyClothRecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ClothInWardrobeViewAdapter.ViewHolder>() {
 
-    var onItemClickListener: ((ClothPreview) -> Unit)? = null
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val id:TextView = view.findViewById(R.id.hiddenInput)
         val imageView: ImageView = view.findViewById(R.id.imageView)
         val itemName: TextView = view.findViewById(R.id.item_name)
         init {
-            view.setOnClickListener {
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    val item = items[position]
-                    onItemClickListener?.invoke(item)
-                }
-            }
         }
     }
 

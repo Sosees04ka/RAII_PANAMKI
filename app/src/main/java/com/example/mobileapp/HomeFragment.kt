@@ -20,6 +20,7 @@ class HomeFragment : Fragment(),AuthListener {
     private lateinit var exitButton: ImageButton
     private lateinit var authController: AuthController
     private lateinit var buttonCreateCloth: FrameLayout
+    private lateinit var button_create_look: FrameLayout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,9 +33,16 @@ class HomeFragment : Fragment(),AuthListener {
 
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         buttonCreateCloth = view.findViewById<FrameLayout>(R.id.buttonAddCloth)
+        button_create_look=view.findViewById<FrameLayout>(R.id.buttonAddLook)
         buttonCreateCloth.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ClothAddFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+        button_create_look.setOnClickListener{
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, LookAddFragment())
                 .addToBackStack(null)
                 .commit()
         }
