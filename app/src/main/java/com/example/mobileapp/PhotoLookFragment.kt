@@ -2,6 +2,8 @@ package com.example.mobileapp
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -18,6 +20,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContextCompat
 import com.example.mobileapp.controllers.ClothController
 import com.example.mobileapp.controllers.LookController
 import com.example.mobileapp.controllers.listeners.AuthController
@@ -26,6 +29,7 @@ import com.example.mobileapp.controllers.listeners.LookListener
 import com.example.mobileapp.models.cloth.ClothInfo
 import com.example.mobileapp.models.cloth.ClothPreview
 import com.example.mobileapp.models.look.GeneratedOutfitsInfo
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 
@@ -77,10 +81,23 @@ class PhotoLookFragment : Fragment(),LookListener {
         textView=view.findViewById(R.id.nameCloth)
         buttonAddClothTo=view.findViewById(R.id.buttonAddClothTo)
         buttonAddClothTo.setOnClickListener{
-            val imageBitmap = (imageViewPhoto.drawable as? BitmapDrawable)?.bitmap
-            buttonAddClothTo.isEnabled=false
-            buttonAddClothTo.isClickable=false
-            lookController.getLooksByPhoto(textView.text.toString(),imageBitmap)
+            val defaultDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.photo)
+            val currentDrawable = imageViewPhoto.drawable
+
+            val imageBitmap = if (currentDrawable != null && currentDrawable.constantState == defaultDrawable?.constantState) {
+                null
+            } else {
+                val originalBitmap = (currentDrawable as? BitmapDrawable)?.bitmap
+                originalBitmap?.let { compressBitmap(it, 60) } // сжатие до 70%
+            }
+
+            if(imageBitmap!=null){
+                buttonAddClothTo.isEnabled = false
+                buttonAddClothTo.isClickable = false
+            }
+
+            lookController.getLooksByPhoto(textView.text.toString(), imageBitmap)
+
         }
         imageViewPhoto = view.findViewById(R.id.imageViewPhoto)
         view.findViewById<View>(R.id.buttonSelectPhoto).setOnClickListener {
@@ -90,6 +107,12 @@ class PhotoLookFragment : Fragment(),LookListener {
         return view
     }
 
+    fun compressBitmap(bitmap: Bitmap, quality: Int = 80): Bitmap {
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
+        val byteArray = outputStream.toByteArray()
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+    }
     private fun checkCameraPermissionAndShowDialog() {
         when {
             requireContext().checkSelfPermission(android.Manifest.permission.CAMERA) ==
