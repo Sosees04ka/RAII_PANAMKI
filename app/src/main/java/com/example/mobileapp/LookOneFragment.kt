@@ -98,7 +98,9 @@ class LookOneFragment : Fragment(),LookListener {
             else{
                 favButton.setImageResource(R.drawable.ic_heart_outline)
             }
-            outfitTitle.text = outfit.score.toString()
+            val text = String.format("%.1f%%", outfit.score * 100)
+
+            outfitTitle.text = text
             productAdapter.updateItems(outfit.items ?: mutableListOf())
 
             // Уведомляем об изменении статуса при загрузке

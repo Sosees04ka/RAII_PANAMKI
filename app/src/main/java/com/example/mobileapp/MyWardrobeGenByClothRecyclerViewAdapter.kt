@@ -25,7 +25,8 @@ class MyWardrobeGenByClothRecyclerViewAdapter(
 
         fun bind(item: GeneratedOutfitsInfo) {
             // Показываем баллы (score) как заголовок
-            outfitTitle.text = "${item.score}"
+            val text = String.format("%.1f%%", item.score * 100)
+            outfitTitle.text = text
             if (item.like_status) {
                 favButton.setImageResource(R.drawable.ic_heart_filled)
             } else {
