@@ -12,7 +12,6 @@ SCRIPT_DIR = Path(__file__).parent.absolute()
 UTIL_DIR = SCRIPT_DIR.parent / "util"
 
 def _prepare_image(img_base64, img_size):
-    """Декодирование base64, удаление фона и подготовка изображения."""
     if ',' in img_base64:
         img_base64 = img_base64.split(',')[-1]
     input_data = base64.b64decode(img_base64)
@@ -27,7 +26,6 @@ def _prepare_image(img_base64, img_size):
     return img_array
 
 def _predict(img_array, model_path, class_names):
-    """Запуск модели и возврат результата."""
     model = load_model(model_path)
     predictions = model.predict(img_array)
     idx = np.argmax(predictions[0])
@@ -85,7 +83,6 @@ def predict_subCategory(img_base64, masterCategory, img_size=(224, 224)):
     }
 
     try:
-        # нормализация категории
         masterCategory = masterCategory.strip().title()
         if masterCategory not in category_map:
             raise ValueError(f"Неизвестная masterCategory: {masterCategory}")
