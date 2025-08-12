@@ -12,24 +12,24 @@
 ## Техническая часть проекта
 
 ### Мобильное приложение (Android)
-Разработка ведется в ветке [android-app](/tree/android-app)  
+Разработка ведется в ветке [android-app](https://github.com/Sosees04ka/RAII_PANAMKI/tree/android-app)  
 Содержит исходный код мобильного приложения и инструкции по запуску.
 
 ### Backend (PHP)
-Разработка ведется в ветке [backend](/tree/backend)  
+Разработка ведется в ветке [backend](https://github.com/Sosees04ka/RAII_PANAMKI/tree/backend)  
 Реализует:
 - Регистрацию и авторизацию пользователей
 - Прослойку между нейросетевыми сервисами и мобильным приложением
 
 ### FastAPI сервис (Python)
-Разработка ведется в ветке [fastapi](/tree/fastapi)  
+Разработка ведется в ветке [fastapi](https://github.com/Sosees04ka/RAII_PANAMKI/tree/fastapi)  
 Содержит реализации:
 - Моделей CNN для классификации одежды
 - Генетического алгоритма для подбора образов
 - Алгоритмов сегментации и кластеризации
 
 ## Исследовательская часть
-Разработка ведется в ветке [neural_network](/tree/neural_network)  
+Разработка ведется в ветке [neural_network](https://github.com/Sosees04ka/RAII_PANAMKI/tree/neural_network)  
 Включает исследования по:
 - Выбору оптимальных CNN архитектур
 - Стратегиям обучения моделей
@@ -37,5 +37,5 @@
 - Финальные модели, используемые в проекте
 
 ## Контакты
-По вопросам обращайтесь: https://t.me/@prankonlife
-Телеграмм канал проекта: https://t.me/panamkipanamki
+- По вопросам обращайтесь: https://t.me/@prankonlife
+- Телеграмм канал проекта: https://t.me/panamkipanamki
