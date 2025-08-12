@@ -14,12 +14,18 @@ class Cloth extends Model
         'base_color',
         'usage',
         'product_display_name',
-        'picture'
+        'picture',
+        'status'
     ];
 
     protected $casts = [
         'base_color' => 'array',
     ];
+
+    public function looks()
+    {
+        return $this->belongsToMany(Look::class, 'cloths_look', 'cloth_id', 'look_id');
+    }
 
     public function user()
     {

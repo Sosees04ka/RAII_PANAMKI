@@ -27,11 +27,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/look/weather', [LookController::class, 'createLooksOnWeather']);
-    Route::get('/look/random', [LookController::class, 'createLookRandom']);
-    Route::get('/look/picture', [LookController::class, 'createLookOnPicture']);
+    Route::post('/look/picture', [LookController::class, 'createLookOnPicture']);
     Route::get('/look/cloth/{id}', [LookController::class, 'createLooksOnCloth']);
-    Route::get('/look/{id}', [LookController::class, 'get']);
-    Route::get('/look', [LookController::class, 'get']);
+    Route::get('/look/{id}', [LookController::class, 'show']);
+    Route::get('/look', [LookController::class, 'show']);
     Route::post('/look/like/{id}', [LookController::class, 'store']);
     Route::post('/look/dislike/{id}', [LookController::class, 'destroy']);
 });

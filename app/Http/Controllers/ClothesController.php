@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ClothCategory;
 use App\Models\Cloth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -14,22 +15,13 @@ class ClothesController extends Controller
             'picture' => 'required|string',
             "product_display_name" => "required|string",
         ]);
-
-        $newCloths = Cloth::create([
-            'user_id' => $request->user()->id,
-            'picture' => $request->picture,
-            'product_display_name' => $request->product_display_name,
-            'base_color' => [0, 0, 0],
-            'usage' => "m",
-            'master_category' => "m",
-            'sub_category' => "m",
-        ]);
-
-        return ['clothId' => $newCloths->id];
-
-        $connectionString = 'http://127.0.0.1:8080/api/author';
-        $response = Http::get($connectionString, [
-            'picture' => $request->picture
+        set_time_limit(0);
+        $connectionString = 'http://127.0.0.1:8080/add_cloth_to_wardrobe';
+        $response = Http::withOptions([
+            'timeout' => 720,
+            'connect_timeout' => 60,
+        ])->post($connectionString, [
+            'img64' => $request->picture
         ]);
         if ($response->successful()) {
             $data = $response->json();
@@ -39,8 +31,8 @@ class ClothesController extends Controller
                 'picture' => $request->picture,
                 'base_color' => $data['color'],
                 'usage' => $data['usage'],
-                'master_category' => $data['master_category'],
-                'sub_category' => $data['sub_category'],
+                'master_category' => $data['masterCategory'],
+                'sub_category' => $data['subCategory'],
             ]);
             return ['clothId' => $newCloths->id];
         } else {
@@ -51,8 +43,11 @@ class ClothesController extends Controller
     public function get(Request $request, $id = null)
     {
         if ($id) {
-            $cloth = Cloth::where('user_id', $request->user()->id)
+            $cloth = Cloth::where('user_id', $request->user()->id)->where('status', true)
                 ->findOrFail($id);
+            $cloth->master_category = ClothCategory::from($cloth->master_category)->label();
+            $cloth->sub_category = ClothCategory::from($cloth->sub_category)->label();
+            $cloth->usage = ClothCategory::from($cloth->usage)->label();
         } else {
             $cloth = Cloth::where('user_id', $request->user()->id)->get();
         }

@@ -6,10 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cloth_look extends Model
 {
-    public function cloth(){
-        return $this->belongsTo('App\Cloth','id');
+    protected $table = 'cloths_look';
+    public $incrementing = false;
+    public $timestamps = true;
+
+    protected $fillable = ['cloth_id', 'look_id'];
+
+    public function cloth()
+    {
+        return $this->belongsTo(Cloth::class, 'cloth_id', 'id');
     }
-    public function look(){
-        return $this->belongsTo('App\Look','id');
+
+    public function look()
+    {
+        return $this->belongsTo(Look::class, 'look_id', 'id');
     }
 }
